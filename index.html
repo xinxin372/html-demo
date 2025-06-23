@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>多步问答页面</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .step { display: none; }
+    .step.active { display: block; }
+    button { margin: 5px; padding: 10px 20px; }
+    .message { margin-top: 10px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <!-- 第一步：让用户选择 "很棒" 或 "超级棒" -->
+  <div id="step1" class="step active">
+    <p>你觉得曹加旺很棒还是超级棒？</p>
+    <button onclick="chooseOption('很棒')">很棒</button>
+    <button onclick="chooseOption('超级棒')">超级棒</button>
+  </div>
+
+  <!-- 第二步：根据第一步的选择显示不同的回应 -->
+  <div id="step2" class="step">
+    <p id="response2"></p>
+    <button onclick="nextStep2()">下一步</button>
+  </div>
+
+  <!-- 第三步：循环询问今天是否喜欢 XX -->
+  <div id="step3" class="step">
+    <p>今天喜不喜欢 XX？</p>
+    <button onclick="chooseLike('喜欢')">喜欢</button>
+    <button onclick="chooseLike('不喜欢')">不喜欢</button>
+    <p id="response3" class="message"></p>
+  </div>
+
+  <script>
+    let firstChoice = '';
+
+    // 处理第一步的用户选择
+    function chooseOption(option) {
+      firstChoice = option;
+      // 隐藏第 1 步，显示第 2 步
+      document.getElementById('step1').classList.remove('active');
+      const response2 = document.getElementById('response2');
+      if (option === '很棒') {
+        response2.textContent = '确实不是的，你是超级棒！';
+      } else {
+        response2.textContent = '你怎么知道自己超级棒？';
+      }
+      document.getElementById('step2').classList.add('active');
+    }
+
+    // 点击“下一步”进入第 3 步
+    function nextStep2() {
+      document.getElementById('step2').classList.remove('active');
+      document.getElementById('step3').classList.add('active');
+    }
+
+    // 处理第三步的“喜欢/不喜欢”选择
+    function chooseLike(option) {
+      const response3 = document.getElementById('response3');
+      if (option === '喜欢') {
+        // 如果用户选择喜欢，则显示肯定信息
+        response3.textContent = '她(他)今天也很喜欢你！';
+      } else {
+        // 如果选择不喜欢，通过 alert 提示并保持在当前步骤
+        response3.textContent = '';
+        alert('请重新选择：你今天喜不喜欢 XX？');
+      }
+    }
+  </script>
+</body>
+</html>
